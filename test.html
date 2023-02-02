@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <!-- <form action = "http://localhost:3000/test/" method = "post"> -->
+    <!-- <form>
+        <input type="text" name="name" value="Konan Barbarian">
+        <input type="submit">
+    </form> -->
+
+    <form>
+        <input type="text" name="name" placeholder="Name" required value="ArtyomBroflowsky">
+        <input type="email" name="email" placeholder="Email" required value="artyomshevchenko@gmail.com">
+        <input type="submit" value="Go!">
+    </form>
+
+</body>
+
+<script>
+    const form = document.querySelector("form")
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault()
+
+        const formData = new FormData(form)
+
+        fetch("http://localhost:3000/test", {
+            method: "POST",
+            body: formData,
+        })
+            .then(res => res.text())
+            .then(res => console.log(res))
+    })
+
+
+
+</script>
+
+</html>
