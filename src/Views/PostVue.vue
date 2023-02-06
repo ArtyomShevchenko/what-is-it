@@ -1,51 +1,72 @@
 <template>
-    <div class="post-container" v-motion-slide-bottom>
-        <div class="container d-flex flex-column gap-4" v-if="post">
-            <div class=" bg-light p-4">
-                <h1>{{ post.title }}</h1>
-                <p class="lead">{{ post.discription }}</p>
-                <p class="m-0 p-2 small text-secondary text-end">Author: {{ post.email }}</p>
-            </div>
-
-            <!-- <form class="d-flex flex-column gap-2" v-bind:action="this.path" method="post"> -->
-            <form ref="formComment" class="d-flex flex-column gap-2" v-on:submit="submitForm">
-                <div class="form-floating">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
-                        style="height: 120px" name="discription">User comment</textarea>
-                    <label for="floatingTextarea">Comments</label>
-                </div>
-
+    <div class="container" v-motion-slide-bottom>
+        <div class="row">
+            <div class="col-12">
                 <div>
-                    <input name="email" placeholder="Your email" type="email" class="form-control" id="form-email"
-                        aria-describedby="emailHelp" value="user@gmail.com">
+                    <h1>{{ post.title }}</h1>
+                    <p class="lead">{{ post.discription }}</p>
+                    <p class="m-0 p-2 small text-secondary text-end">Author: {{ post.email }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" v-if="post">
+            <form ref="formComment" v-on:submit="submitForm">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                                style="height: 120px" name="discription">User comment</textarea>
+                            <label for="floatingTextarea">Comments</label>
+                        </div>
+                    </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary align-self-start">Comment</button>
+                <div class="row">
+                    <div class="col-md-8  mt-2">
+                        <input name="email" placeholder="Your email" type="email" class="form-control" id="form-email"
+                            aria-describedby="emailHelp" value="user@gmail.com">
+                    </div>
+
+                    <div class="col-md-4  mt-2">
+                        <button type="submit" class="btn btn-primary">Comment</button>
+                    </div>
+                </div>
             </form>
+        </div>
 
-            <p v-if="response" 
-                class="text-success"
-                v-motion-slide-bottom>
-                Comment successfully submitted
-            </p>
+        <hr>
 
-
-            <hr />
-
-            <div class="coments-list d-flex flex-column gap-2" v-if="post.comments">
-                <section v-for="(comment, index) of post.comments" class="card" :key="index" v-motion-slide-visible-bottom>
+        <div class="row" v-if="post.comments">
+            <div class="col-12">
+                <section v-for="(comment, index) of post.comments" class="card mt-2" :key="index"
+                    v-motion-slide-visible-bottom>
                     <p class="m-0 p-2 small bg-light text-secondary">{{ comment.email }}</p>
                     <p class="m-0 mt-2 p-2">User: {{ comment.discription }}</p>
                 </section>
             </div>
-            <div v-else>
-                <p>No comments.</p>
-            </div>
-
         </div>
 
-        <div v-else>
-            <h1>Loading...</h1>
+        <div class="row" v-else>
+            <div class="col-12">
+                <p>No comments.</p>
+            </div>
+        </div>
+
+
+
+        <div class="row" v-if="response">
+            <div class="col-12">
+                <p class="text-success" v-motion-slide-bottom>
+                    Comment successfully submitted
+                </p>
+            </div>
+        </div>
+
+        <div class="row" v-if="!post">
+            <div class="col-12">
+                <h1>Loading...</h1>
+            </div>
         </div>
     </div>
 </template>

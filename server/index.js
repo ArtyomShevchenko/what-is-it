@@ -18,16 +18,24 @@ app.use(express.json());
 // install dependencies --npm i twilio
 
 const accountSid = "ACd7d9a795076462aa00d8222242628ad5";
-const authToken = "c5fddf0c0a7cf6ea3226822f9f37fe63";
+const authToken = "1d842143f08e5ebc63c0e0ce2679a17c";
+const smsFrom = "+14308031713"
+const smsTo = "+380934877758"
 const client = require("twilio")(accountSid, authToken);
 
 // client.messages
-//   .create({ body: "Hello from Twilio", from: "+14308031713", to: "+380934877758" })
-//   .then(message => console.log(message.sid));
+//     .create({ body: "Hello from Twilio", from: smsFrom, to: smsTo })
+//     .then(message => console.log(message.sid));
 
 // -------------- sms end -----------------
 
 app.route("/")
+    .get((req, res, next) => {
+        res.send("Server work...")
+        next()
+    })
+
+app.route("/all")
     .get((req, res, next) => {
         fs.readFile(
             "./server/database.json",
@@ -52,7 +60,7 @@ app.route("/new-post")
                 const arr = JSON.parse(data)
 
                 // add id to post
-                req.body.id = arr.length + 1
+                req.body.id = Number(Date.now())
 
                 // add create time
                 req.body.time = Date()
@@ -126,13 +134,29 @@ app.route("/post/:id")
             })
     });
 
-// app.get('/test', (req, res, next) => {
-//     res.send("Message send");
-//     next()
-// });
+app.route("/top")
+    .get((req, res, next) => {
+        fs.readFile(
+            "./server/database.json",
+            "utf-8",
+            (err, data) => {
+                if (err) throw err
+
+                const sortData = JSON.parse(data)
+                sortData.sort();
+
+                console.log(sortData)
+
+                res.send(data)
+                next()
+            }
+        )
+    })
 
 app.route("/contact")
     .post(upload.any(), (req, res, next) => {
+        const userName = req.body.name
+
         fs.readFile(
             "./server/contact.json",
             "utf-8",
@@ -147,8 +171,11 @@ app.route("/contact")
                     JSON.stringify(file),
                     err => {
                         if (err) console.log(err)
-                        console.log(colors.bgGreen("New contact:\n"), req.body)
+                        console.log(colors.bgGreen(`New contact: ${userName}`))
 
+                        client.messages
+                            .create({ body: `User ${userName} left contac!`, from: smsFrom, to: smsTo })
+                            .then(message => console.log(message.sid));
                     }
                 )
             });

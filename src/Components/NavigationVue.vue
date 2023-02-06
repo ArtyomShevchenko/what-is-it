@@ -7,17 +7,17 @@
             </button>
             <div class="collapse navbar-collapse " id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item ">
-                        <RouterLink to="/" class="nav-link">Home</RouterLink>
+                    <li class="nav-item">
+                        <RouterLink to="/" class="nav-link text-light">Home</RouterLink>
                     </li>
                     <li class="nav-item">
-                        <RouterLink to="/all-posts" class="nav-link">All post</RouterLink>
+                        <RouterLink to="/all" class="nav-link text-light">All post</RouterLink>
                     </li>
                     <li class="nav-item">
-                        <RouterLink to="/new-post" class="nav-link">New post</RouterLink>
+                        <RouterLink to="/new-post" class="nav-link text-light">New post</RouterLink>
                     </li>
                     <li class="nav-item">
-                        <RouterLink to="/contact" class="nav-link">Contact Us</RouterLink>
+                        <RouterLink to="/contact" class="nav-link text-light">Contact Us</RouterLink>
                     </li>
                 </ul>
             </div>
@@ -30,11 +30,7 @@ export default {}
 </script>
 
 <style scoped>
-.nav-link {
-    color: lightgray;
-}
-
 .router-link-active {
-    color: white !important;
+    text-decoration: underline;
 }
 </style>

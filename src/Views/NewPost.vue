@@ -1,29 +1,44 @@
 <template>
-    <div v-motion-slide-bottom class="container position-relative">
-        <h1>Add new post</h1>
-
-        <form class="mt-6" v-on:submit="submitForm">
-            <div class="mb-3">
-                <label for="form-title" class="form-label">Title post</label>
-                <input name="title" v-model="title" type="text" class="form-control" id="form-title"
-                    aria-describedby="titleHelp">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 v-if="!response" v-motion-slide-bottom>Add new post</h1>
             </div>
+        </div>
 
-            <div class="mb-3">
-                <label for="form-email" class="form-label">Your email address</label>
-                <input name="email" v-model="email" type="email" class="form-control" id="form-email"
-                    aria-describedby="emailHelp">
+        <div class="row">
+            <div class="col-12">
+                <form v-if="!response" v-motion-slide-bottom class="mt-6" v-on:submit="submitForm">
+                    <div class="mb-3">
+                        <label for="form-title" class="form-label">Title post</label>
+                        <input name="title" v-model="title" type="text" class="form-control" id="form-title"
+                            aria-describedby="titleHelp">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="form-email" class="form-label">Your email address</label>
+                        <input name="email" v-model="email" type="email" class="form-control" id="form-email"
+                            aria-describedby="emailHelp">
+                    </div>
+
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                            style="height: 200px" name="discription" v-model="discription"></textarea>
+                        <label for="floatingTextarea">Comments</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary align-self-start">Submit</button>
+                </form>
             </div>
+        </div>
 
-            <div class="form-floating">
-                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
-                    style="height: 200px" name="discription" v-model="discription"></textarea>
-                <label for="floatingTextarea">Comments</label>
+        <div class="row">
+            <div class="col-12">
+                <div v-if="response" v-motion-slide-bottom>
+                    <h2 class="text-success">Form successfully submitted</h2>
+                    <button class="btn btn-primary mt-4" v-on:click="createNewPost">Create new post</button>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary align-self-start">Submit</button>
-        </form>
-
-        <p v-if="response" v-motion-fade class="text-success">Form successfully submitted</p>
+        </div>
     </div>
 </template>
 
@@ -34,7 +49,7 @@ export default {
             title: "What?",
             email: "aaaa@gmail.com",
             discription: "Dont forget i am prodigy",
-            response: null
+            response: false
         }
     },
     methods: {
@@ -56,14 +71,17 @@ export default {
                     }
                 })
 
+        },
+        createNewPost() {
+            this.response = false
         }
     },
     watch: {
-        response() {
-            setTimeout(() => {
-                this.response = null
-            }, 2000)
-        }
+        // response() {
+        //     setTimeout(() => {
+        //         this.response = null
+        //     }, 2000)
+        // }
     }
 }
 </script>
