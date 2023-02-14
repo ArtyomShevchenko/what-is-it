@@ -83,6 +83,8 @@
 </template>
 
 <script>
+// const server = "116.203.249.5"
+
 export default {
     data() {
         return {
@@ -101,6 +103,7 @@ export default {
             const formData = new FormData(form)
 
             fetch("http://localhost:3000/contact", {
+            // fetch("http://116.203.249.5:3000/contact", {
                 method: "POST",
                 body: formData,
             })

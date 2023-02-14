@@ -5,20 +5,40 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse " id="navbarNav">
+            <div class="collapse navbar-collapse" id="navbarNav" ref="navbarRef">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <RouterLink to="/" class="nav-link text-light">Home</RouterLink>
+                    <li class="nav-item" >
+                        <RouterLink 
+                            to="/" 
+                            class="nav-link text-light"
+                            v-on:click="handleNavCollapse"
+                            >Home
+                        </RouterLink>
+                    </li>
+                    <li class="nav-item" >
+                        <RouterLink 
+                            to="/all" 
+                            class="nav-link text-light"
+                            v-on:click="handleNavCollapse"
+                            >All post
+                        </RouterLink>
                     </li>
                     <li class="nav-item">
-                        <RouterLink to="/all" class="nav-link text-light">All post</RouterLink>
-                    </li>
-                    <li class="nav-item">
-                        <RouterLink to="/new-post" class="nav-link text-light">New post</RouterLink>
-                    </li>
-                    <li class="nav-item">
-                        <RouterLink to="/contact" class="nav-link text-light">Contact Us</RouterLink>
-                    </li>
+                        <RouterLink 
+                            to="/new-post" 
+                            class="nav-link text-light"
+                            v-on:click="handleNavCollapse"
+                        >New post
+                    </RouterLink>
+                </li>
+                <li class="nav-item">
+                    <RouterLink 
+                        to="/contact" 
+                        class="nav-link text-light"
+                        v-on:click="handleNavCollapse"
+                    >Contact Us
+                </RouterLink>
+            </li>
                 </ul>
             </div>
         </div>
@@ -26,11 +46,18 @@
 </template>
 
 <script>
-export default {}
+export default {
+    methods: {
+        handleNavCollapse() {
+            this.$refs.navbarRef.classList.remove("show")
+    }
+}
+}
 </script>
 
 <style scoped>
 .router-link-active {
-    text-decoration: underline;
+    text-transform: uppercase;
+    letter-spacing: .2rem;
 }
 </style>

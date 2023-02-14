@@ -36,6 +36,7 @@ export default {
     },
     created() {
         fetch("http://localhost:3000/top")
+        // fetch("http://116.203.249.5:3000/top")
             .then(res => res.json())
             .then(data => {
                 this.posts = data

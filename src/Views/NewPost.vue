@@ -46,9 +46,9 @@
 export default {
     data() {
         return {
-            title: "What?",
-            email: "aaaa@gmail.com",
-            discription: "Dont forget i am prodigy",
+            title: "",
+            email: "",
+            discription: "",
             response: false
         }
     },
@@ -61,6 +61,7 @@ export default {
             const formData = new FormData(form)
 
             fetch("http://localhost:3000/new-post", {
+            // fetch("http://116.203.249.5:3000/new-post", {
                 method: "POST",
                 body: formData,
             })

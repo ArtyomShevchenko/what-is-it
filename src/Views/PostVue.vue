@@ -115,6 +115,7 @@ export default {
         this.id = this.$route.params.id
 
         this.path = `http://localhost:3000/post/${this.id}`
+        // this.path = `http://116.203.249.5/:3000/post/${this.id}`
 
         this.getComments()
     },
