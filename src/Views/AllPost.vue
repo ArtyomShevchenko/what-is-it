@@ -41,12 +41,10 @@ export default {
         }
     },
     created() {
-        fetch("http://localhost:3000/all")
+        fetch("http://116.203.249.5:3000/all")
             .then(res => res.json())
             .then(data => {
                 this.posts = data
-
-                console.log(this.posts.target)
             })
     },
 }
