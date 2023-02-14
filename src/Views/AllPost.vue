@@ -5,7 +5,7 @@
                 <div v-if="posts" class="d-flex flex-column gap-3">
                     <div v-for="post of posts" v-bind:key="post.id" class="card">
                         <!-- <img src="..." class="card-img-top" alt="..."> -->
-                        <div class="card-body d-flex flex-column align-items-start gap-2" v-motion-slide-visible-bottom>
+                        <div class="card-body d-flex flex-column align-items-start gap-2">
                             <h3 v-if="post.title" class="card-title">
                                 {{ post.title }}
                             </h3>
@@ -47,8 +47,7 @@ export default {
             .then(data => {
                 this.posts = data
 
-                console.log(this.posts.target)
             })
-    },
+        },
 }
 </script>

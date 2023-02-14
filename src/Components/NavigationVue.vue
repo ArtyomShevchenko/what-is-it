@@ -10,7 +10,7 @@
                     <li class="nav-item" >
                         <RouterLink 
                             to="/" 
-                            class="nav-link text-light"
+                            class="nav-link"
                             v-on:click="handleNavCollapse"
                             >Home
                         </RouterLink>
@@ -18,7 +18,7 @@
                     <li class="nav-item" >
                         <RouterLink 
                             to="/all" 
-                            class="nav-link text-light"
+                            class="nav-link"
                             v-on:click="handleNavCollapse"
                             >All post
                         </RouterLink>
@@ -26,7 +26,7 @@
                     <li class="nav-item">
                         <RouterLink 
                             to="/new-post" 
-                            class="nav-link text-light"
+                            class="nav-link"
                             v-on:click="handleNavCollapse"
                         >New post
                     </RouterLink>
@@ -34,7 +34,7 @@
                 <li class="nav-item">
                     <RouterLink 
                         to="/contact" 
-                        class="nav-link text-light"
+                        class="nav-link"
                         v-on:click="handleNavCollapse"
                     >Contact Us
                 </RouterLink>
@@ -56,8 +56,11 @@ export default {
 </script>
 
 <style scoped>
+
+.nav-link {
+    color: #ccc !important;
+}
 .router-link-active {
-    text-transform: uppercase;
-    letter-spacing: .2rem;
+    color: #fff !important;
 }
 </style>

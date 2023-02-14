@@ -1,14 +1,14 @@
 <template>
-    <div class="container">
-        <div class="row">
+    <div class="container" v-motion-slide-bottom>
+        <div class="row" v-if="!response">
             <div class="col-12">
-                <h1 v-if="!response" v-motion-slide-bottom>Add new post</h1>
+                <h1 class="mb-5 mt-3">Create a new post</h1>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-if="!response">
             <div class="col-12">
-                <form v-if="!response" v-motion-slide-bottom class="mt-6" v-on:submit="submitForm">
+                <form class="mt-6" v-on:submit="submitForm">
                     <div class="mb-3">
                         <label for="form-title" class="form-label">Title post</label>
                         <input name="title" v-model="title" type="text" class="form-control" id="form-title"
@@ -22,20 +22,32 @@
                     </div>
 
                     <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
-                            style="height: 200px" name="discription" v-model="discription"></textarea>
-                        <label for="floatingTextarea">Comments</label>
+                        <textarea name="discription" class="form-control" id="floatingTextarea" style="height: 200px"
+                            v-model="discription" placeholder="sda">
+                        </textarea>
+                        <label for="floatingTextarea">You need add discription.</label>
                     </div>
-                    <button type="submit" class="btn btn-primary align-self-start">Submit</button>
+
+                    <button type="submit" class="btn btn-primary align-self-start" data-bs-toggle="modal"
+                        data-bs-target="#myModal" v-bind:disabled="title && email && discription ? false : true">
+                        Submit
+                    </button>
                 </form>
             </div>
         </div>
+<!-- 
+        <ModalVue ref="modalNewPostIsAdded">
+            The publication is posted on the website
+        </ModalVue> -->
+
 
         <div class="row">
             <div class="col-12">
                 <div v-if="response" v-motion-slide-bottom>
-                    <h2 class="text-success">Form successfully submitted</h2>
-                    <button class="btn btn-primary mt-4" v-on:click="createNewPost">Create new post</button>
+                    <h2 class="text-success text-center">Form successfully submitted</h2>
+                    <!-- <button class="btn btn-primary mt-4" v-on:click="createNewPost">
+                        Create new post
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -43,12 +55,15 @@
 </template>
 
 <script>
+// import ModalVue from "@/Components/ModalVue.vue"
+
 export default {
+    // components: { ModalVue },
     data() {
         return {
-            title: "",
-            email: "",
-            discription: "",
+            title: null,
+            email: null,
+            discription: null,
             response: false
         }
     },
@@ -69,13 +84,23 @@ export default {
                 .then(res => {
                     if (res == 235) {
                         this.response = true
-                    }
-                })
+                        this.clearForm()
 
+                        // this.$refs.modalNewPostIsAdded.open()
+                    }
+
+                })
+        },
+        clearForm() {
+            this.title = null
+            this.email = null
+            this.discription = null
+
+            setTimeout(() => this.response = false, 3000)
         },
         createNewPost() {
             this.response = false
-        }
+        },
     },
     watch: {
         // response() {

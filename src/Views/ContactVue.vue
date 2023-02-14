@@ -1,26 +1,67 @@
 <template>
     <div v-motion-slide-bottom class="container">
-        <div class="row gap-4">
-            <div class="col-md-6 p-3 d-flex flex-column gap-2">
-                <div>Author: Artyom Shevchenko</div>
-                <div>Country: Ukraine</div>
-                <div>State: Kyiv</div>
-                <div>City: Vyshgorod</div>
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mt-3">My contact</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mt-5 d-flex flex-column gap-2">
+                <table>
+                    <tr>
+                        <td>Author: </td>
+                        <td>Artyom Shevchenko</td>
+                    </tr>
+                    <tr>
+                        <td>Country</td>
+                        <td>Ukraine</td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>Kyiv</td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td>Vyshgorod</td>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td>
+                            <a href="tel:+380934877758" class="text-decoration-underline text-primary" title="Call me">
+                                +380934877758
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mail</td>
+                        <td>
+                            <a href="mailto:artyomshevchenkowarmgray@gmail.com"
+                                class="text-decoration-underline text-primary" title="Write to me">
+                                artyomshevchenkowarmgray@gmail.com
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <!-- <div>Author: <strong>Artyom Shevchenko</strong></div>
+                <div>Country: <strong>Ukraine</strong></div>
+                <div>State: <strong>Kyiv</strong></div>
+                <div>City: <strong>Vyshgorod</strong></div>
                 <a href="tel:+380934877758" class="text-decoration-none text-dark">
                     Phone:
-                    <span class="text-decoration-underline text-primary" title="Call me">
+                    <strong class="text-decoration-underline text-primary" title="Call me">
                         +380934877758
-                    </span>
+                    </strong>
                 </a>
                 <a href="mailto:artyomshevchenkowarmgray@gmail.com" class="text-decoration-none text-dark">
                     Mail:
-                    <span class="text-decoration-underline text-primary" title="Write to me">
+                    <strong class="text-decoration-underline text-primary" title="Write to me">
                         artyomshevchenkowarmgray@gmail.com
-                    </span>
-                </a>
+                    </strong>
+                </a> -->
             </div>
 
-            <form id="contact-form" v-on:submit="submitForm" class="col-md-6">
+            <form class="col-md-6 mt-5" v-on:submit="submitForm" id="contact-form">
                 <!-- Name input -->
                 <div class="mb-3">
                     <label class="form-label" for="name">Name</label>
@@ -60,7 +101,7 @@
 
                 <!-- Form submissions success message -->
                 <div v-if="response" class="d-grid">
-                    <button class="btn btn-success btn-lg" type="submit">Form submission successful!</button>
+                    <button class="btn btn-success btn-lg" type="submit" disabled>Form submission successful!</button>
                 </div>
 
                 <!-- Form submissions error message -->

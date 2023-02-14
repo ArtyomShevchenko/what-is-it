@@ -7,9 +7,6 @@ const colors = require("colors")
 const multer = require("multer")
 const upload = multer({ dest: "./uploads" })
 
-// const bodyParser = require("body-parser")
-// app.use(bodyParser.urlencoded())
-
 app.use(express.urlencoded());
 app.use(express.json());
 
@@ -17,11 +14,11 @@ app.use(express.json());
 
 // install dependencies --npm i twilio
 
-const accountSid = "ACd7d9a795076462aa00d8222242628ad5";
-const authToken = "1d842143f08e5ebc63c0e0ce2679a17c";
-const smsFrom = "+14308031713"
-const smsTo = "+380934877758"
-const client = require("twilio")(accountSid, authToken);
+// const accountSid = "ACd7d9a795076462aa00d8222242628ad5";
+// const authToken = "1d842143f08e5ebc63c0e0ce2679a17c";
+// const smsFrom = "+14308031713"
+// const smsTo = "+380934877758"
+// const client = require("twilio")(accountSid, authToken);
 
 // client.messages
 //     .create({ body: "Hello from Twilio", from: smsFrom, to: smsTo })
@@ -43,7 +40,7 @@ app.route("/all")
             (err, data) => {
                 if (err) throw err
 
-                res.send(JSON.stringify(data))
+                res.send(data)
                 next()
             }
         )
@@ -164,7 +161,7 @@ app.route("/contact")
                 if (err) console.log(err)
 
                 const file = JSON.parse(data)
-                file.push(req.body)
+                file.unshift(req.body)
 
                 fs.writeFile(
                     "./server/contact.json",
@@ -173,9 +170,9 @@ app.route("/contact")
                         if (err) console.log(err)
                         console.log(colors.bgGreen(`New contact: ${userName}`))
 
-                        client.messages
-                            .create({ body: `User ${userName} left contac!`, from: smsFrom, to: smsTo })
-                            .then(message => console.log(message.sid));
+                        // client.messages
+                        //     .create({ body: `User ${userName} left contac!`, from: smsFrom, to: smsTo })
+                        //     .then(message => console.log(message.sid));
                     }
                 )
             });
@@ -183,43 +180,5 @@ app.route("/contact")
         res.sendStatus(235)
         next()
     })
-
-// .post((req, res, next) => {
-//     fs.readFile(
-//         "./server/database.json",
-//         "utf-8",
-//         (err, data) => {
-//             if (err) throw err
-
-//             const database = JSON.parse(data)
-//             console.log(colors.blue("File database.json is read!"))
-
-//             database.filter((post, index) => {
-//                 post.id == req.params.id
-//                 if (database[index].comments) {
-//                     database[index].comments.push(req.body)
-//                     console.log(colors.magenta("Push comment in arr"))
-//                 } else {
-//                     database[index].comments = [req.body]
-//                     console.log(colors.magenta("Add comment in new arr"))
-//                 }
-//             })
-
-//             fs.writeFile(
-//                 "./server/database.json",
-//                 JSON.stringify(database),
-//                 "utf-8",
-//                 err => {
-//                     if (err) throw err
-//                 }
-//             )
-//         }
-//     )
-// })
-
-// app.route("/test/:id")
-//     .get((req, res, next) => {
-//         res.send("/test/" + req.params.id)
-//     })
 
 app.listen(3000, () => console.log(colors.bold.magenta("Server work on ") + colors.blue("==> ") + colors.bgMagenta(`http://localhost:${PORT}`)))
