@@ -1,0 +1,6 @@
+{
+  "appId": "what.is.it",
+  "appName": "what-is-it",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

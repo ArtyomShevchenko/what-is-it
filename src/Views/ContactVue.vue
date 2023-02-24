@@ -2,15 +2,15 @@
     <div v-motion-slide-bottom class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="mt-3">My contact</h1>
+                <h1>Contact me</h1>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6 mt-5 d-flex flex-column gap-2">
-                <table>
+        <div class="row contact-content">
+            <div class="col-md-6">
+                <div class="contact-data">
                     <tr>
-                        <td>Author: </td>
+                        <td>Author</td>
                         <td>Artyom Shevchenko</td>
                     </tr>
                     <tr>
@@ -42,81 +42,38 @@
                             </a>
                         </td>
                     </tr>
-                </table>
-                <!-- <div>Author: <strong>Artyom Shevchenko</strong></div>
-                <div>Country: <strong>Ukraine</strong></div>
-                <div>State: <strong>Kyiv</strong></div>
-                <div>City: <strong>Vyshgorod</strong></div>
-                <a href="tel:+380934877758" class="text-decoration-none text-dark">
-                    Phone:
-                    <strong class="text-decoration-underline text-primary" title="Call me">
-                        +380934877758
-                    </strong>
-                </a>
-                <a href="mailto:artyomshevchenkowarmgray@gmail.com" class="text-decoration-none text-dark">
-                    Mail:
-                    <strong class="text-decoration-underline text-primary" title="Write to me">
-                        artyomshevchenkowarmgray@gmail.com
-                    </strong>
-                </a> -->
+                </div>
             </div>
 
-            <form class="col-md-6 mt-5" v-on:submit="submitForm" id="contact-form">
-                <!-- Name input -->
-                <div class="mb-3">
-                    <label class="form-label" for="name">Name</label>
-                    <input name="name" class="form-control" id="name" type="text" placeholder="Name"
-                        data-sb-validations="required" />
-                    <div class="invalid-feedback" data-sb-feedback="name:required">Name is required.</div>
-                </div>
+            <div class="col-md-6">
+                <form v-on:submit="submitForm" id="contact-form">
+                    <input name="name" type="text" placeholder="Name" />
+                    <input name="email" type="email" placeholder="Your email" />
+                    <textarea name="text" placeholder="Message"></textarea>
 
-                <!-- Email address input -->
-                <div class="mb-3">
-                    <label class="form-label" for="emailAddress">Email Address</label>
-                    <input name="email" class="form-control" id="emailAddress" type="email" placeholder="Email Address"
-                        data-sb-validations="required, email" />
-                    <div class="invalid-feedback" data-sb-feedback="emailAddress:required">Email Address is
-                        required.
+                    <!-- Form submit button -->
+                    <div v-if="!response && !responseError" class="d-grid">
+                        <button :disabled="isDisabled" type="submit">Submit</button>
                     </div>
-                    <div class="invalid-feedback" data-sb-feedback="emailAddress:email">Email Address Email is
-                        not
-                        valid.
+
+                    <!-- Form submissions success message -->
+                    <div v-if="response" class="d-grid">
+                        <button type="submit" disabled>Form submission successful!</button>
                     </div>
-                </div>
 
-                <!-- Message input -->
-                <div class="mb-3">
-                    <label class="form-label" for="message">Message</label>
-                    <textarea name="text" class="form-control" id="message" type="text" placeholder="Message"
-                        style="height: 8rem;" data-sb-validations="required"></textarea>
-                    <div class="invalid-feedback" data-sb-feedback="message:required">Message is required.</div>
-                </div>
-
-                <h1>{{ responseError }}</h1>
-
-                <!-- Form submit button -->
-                <div v-if="!response && !responseError" class="d-grid">
-                    <button class="btn btn-primary btn-lg" :disabled="isDisabled" type="submit">Submit</button>
-                </div>
-
-                <!-- Form submissions success message -->
-                <div v-if="response" class="d-grid">
-                    <button class="btn btn-success btn-lg" type="submit" disabled>Form submission successful!</button>
-                </div>
-
-                <!-- Form submissions error message -->
-                <div v-if="responseError" class="d-grid">
-                    <button class="btn btn-danger btn-lg" type="submit">Error sending message!</button>
-                </div>
-            </form>
+                    <!-- Form submissions error message -->
+                    <div v-if="responseError" class="d-grid">
+                        <button type="submit">Error sending message!</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <div class="row">
             <div class="col-12">
                 <iframe class="mt-5"
                     src="https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d2114.2525189995085!2d30.46389016336566!3d50.596792055883455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e6!4m0!4m3!3m2!1d50.596667!2d30.463711!5e0!3m2!1suk!2sua!4v1675415597642!5m2!1suk!2sua"
-                    width="100%" height="450" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade">
+                    width="100%" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
         </div>
@@ -143,14 +100,14 @@ export default {
             const form = document.querySelector("#contact-form")
             const formData = new FormData(form)
 
-            fetch("http://localhost:3000/contact", {
-            // fetch("http://116.203.249.5:3000/contact", {
+            // fetch("http://localhost:3000/contact", {
+            fetch("http://116.203.249.5:3000/contact", {
                 method: "POST",
                 body: formData,
             })
                 .then(res => res.json())
                 .then((res) => {
-                    if (res == 235) {
+                    if (res == 215) {
                         this.response = true
                     } else {
                         this.responseError = true
@@ -161,3 +118,13 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.contact-content {
+    margin: 4rem 0;
+}
+
+.contact-content>div {
+    padding-top: 2rem;
+}
+</style>

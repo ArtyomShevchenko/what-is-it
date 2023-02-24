@@ -1,71 +1,55 @@
 <template>
     <div class="container" v-motion-slide-bottom>
-        <div class="row">
+        <div class="row" v-if="post">
             <div class="col-12">
-                <div>
-                    <h1>{{ post.title }}</h1>
-                    <p class="lead">{{ post.discription }}</p>
-                    <p class="m-0 p-2 small text-secondary text-end">Author: {{ post.email }}</p>
+                <h1>{{ post.title }}</h1>
+                <p>{{ post.discription }}</p>
+                <p class="author">Author: {{ post.email }}</p>
+                <button v-on:click="handleLike">Like</button>
+
+                <div class="test">
+                    <h3>Log for developer:</h3>
+                    <p>Like: <b>{{ post.likes }}</b></p>
+                    <p>Comments: <b v-if="post.comments">{{ post.comments.length }}</b></p>
+                    <p>Views: <b>{{ post.views }}</b></p>
                 </div>
             </div>
         </div>
 
         <div class="row" v-if="post">
-            <form ref="formComment" v-on:submit="submitForm">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-floating">
-                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
-                                style="height: 120px" name="discription">User comment</textarea>
-                            <label for="floatingTextarea">Comments</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-8  mt-2">
-                        <input name="email" placeholder="Your email" type="email" class="form-control" id="form-email"
-                            aria-describedby="emailHelp" value="user@gmail.com">
-                    </div>
-
-                    <div class="col-md-4  mt-2">
-                        <button type="submit" class="btn btn-primary">Comment</button>
-                    </div>
-                </div>
+            <form v-on:submit="handleSubmit">
+                <textarea name="discription" placeholder="Leave a comment"></textarea>
+                <input name="email" placeholder="Your email" type="email" />
+                <button type="submit">Comment</button>
             </form>
         </div>
 
-        <hr>
-
-        <div class="row" v-if="post.comments">
-            <div class="col-12">
-                <section v-for="(comment, index) of post.comments" class="card mt-2" :key="index"
-                    v-motion-slide-visible-bottom>
-                    <p class="m-0 p-2 small bg-light text-secondary">{{ comment.email }}</p>
-                    <p class="m-0 mt-2 p-2">User: {{ comment.discription }}</p>
-                </section>
-            </div>
-        </div>
-
-        <div class="row" v-else>
-            <div class="col-12">
-                <p>No comments.</p>
-            </div>
-        </div>
-
-
-
         <div class="row" v-if="response">
             <div class="col-12">
-                <p class="text-success" v-motion-slide-bottom>
+                <p>
                     Comment successfully submitted
                 </p>
             </div>
         </div>
 
+        <div class="row" v-if="post.comments">
+            <div class="col-12 comments_container">
+                <div v-for="(comment, index) of post.comments" class="card" :key="id + index">
+                    <p>User: {{ comment.email }}</p>
+                    <p>{{ comment.discription }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" v-if="post.comments">
+            <div class="col-12">
+                <p>No comments.</p>
+            </div>
+        </div>
+
         <div class="row" v-if="!post">
             <div class="col-12">
-                <h1>Loading...</h1>
+                <div class="loading"></div>
             </div>
         </div>
     </div>
@@ -75,14 +59,14 @@
 export default {
     data() {
         return {
-            id: null,
-            post: null,
-            path: null,
-            response: null,
+            id: '',
+            post: '',
+            path: '',
+            response: false,
         }
     },
     methods: {
-        submitForm(e) {
+        handleSubmit(e) {
             e.preventDefault()
 
             const form = document.querySelector("form")
@@ -97,27 +81,38 @@ export default {
                     if (res == "OK") {
                         this.response = true
                     }
+                });
 
-                    console.log(res)
-                })
-
-
-            this.getComments()
+            this.getComments();
 
         },
         getComments() {
             fetch(this.path)
                 .then(res => res.json())
                 .then(data => this.post = data)
+        },
+        handleLike() {
+            fetch(this.path + "/like", {
+                method: "POST",
+                body: this.id
+            })
         }
     },
     created() {
-        this.id = this.$route.params.id
+        this.id = this.$route.params.id;
 
-        this.path = `http://localhost:3000/post/${this.id}`
-        // this.path = `http://116.203.249.5/:3000/post/${this.id}`
+        this.path = `http://localhost:3000/post/${this.id}`;
+        // this.path = `http://116.203.249.5:3000/post/${this.id}`;
 
         this.getComments()
+
+
+        // fetch(this.path + "/view", {
+        //     method: "POST",
+        //     body: this.id,
+        // })
+
+
     },
     watch: {
         response() {
@@ -129,3 +124,16 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.test {
+    border: .1rem solid red;
+    padding: 1rem;
+}
+
+.comments_container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+</style>
