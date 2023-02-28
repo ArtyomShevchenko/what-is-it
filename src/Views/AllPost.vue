@@ -52,30 +52,29 @@ export default {
             // fetch("http://116.203.249.5:3000/new")
             fetch("http://localhost:3000/new")
                 .then(res => res.json())
-                .then(data => this.posts = data);
+                .then(data => this.posts = JSON.parse(data))
         },
         getMostComments() {
             // fetch("http://116.203.249.5:3000/comments")
-                fetch("http://localhost:3000/comments")
+            fetch("http://localhost:3000/comments")
                 .then(res => res.json())
                 .then(data => this.posts = data);
         },
         getMostLikes() {
             // fetch("http://116.203.249.5:3000/likes")
-                fetch("http://localhost:3000/likes")
+            fetch("http://localhost:3000/likes")
                 .then(res => res.json())
                 .then(data => this.posts = data);
         },
         getMostViews() {
             // fetch("http://116.203.249.5:3000/views")
-                fetch("http://localhost:3000/views")
+            fetch("http://localhost:3000/views")
                 .then(res => res.json())
                 .then(data => this.posts = data);
         }
     },
     created() {
         this.getNew()
-        console.log(this.posts)
     },
 }
 </script>
@@ -92,9 +91,5 @@ export default {
     flex-wrap: wrap;
     gap: 1rem;
     margin: 1rem 0;
-}
-
-.active {
-    background-color: red;
 }
 </style>
