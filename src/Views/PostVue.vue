@@ -26,11 +26,11 @@
                 </form>
             </div>
 
-            <!-- <div class="row" v-if="!response">
+            <div class="row" v-if="!response">
                 <div class="col-12 comment-status">
                     <p>Comment successfully submitted</p>
                 </div>
-            </div> -->
+            </div>
 
             <div class="row" v-if="post.comments">
                 <div class="col-12 comments_container">
