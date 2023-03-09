@@ -4,54 +4,28 @@
             <div class="row">
                 <div class="col-12 post-content">
                     <h2 class="title">{{ post.title }}</h2>
-                    <p class="discription">{{ post.discription }}</p>
-                    <p class="author"><span>author: </span>{{ post.email }}</p>
-                    <div class="like" v-on:click="handleLike"></div>
-
-                    <!-- <div class="test">
-                        <h3>Log for developer:</h3>
-                        <p>Like: <b>{{ post.likes }}</b></p>
-                        <p>Comments: <b v-if="post.comments">{{ post.comments.length }}</b></p>
-                        <p>Views: <b>{{ post.views }}</b></p>
-                    </div> -->
+                    <p class="text">{{ post.text }}</p>
+                    <p class="author">{{ post.email }}</p>
                 </div>
             </div>
 
             <div class="row">
-                <form v-on:submit="handleSubmit">
-                    <textarea name="discription" placeholder="Leave a comment"></textarea>
-                    <input name="email" placeholder="Your email" type="email" />
-                    <button type="submit" v-if="!response">Comment</button>
-                    <ButtonVue v-if="response" background="green">Comment successfully submitted</ButtonVue>
-                </form>
-            </div>
+                <div class="col-1">
+                    <button v-on:click="deletePost">Delete</button>
+                </div>
 
-            <div class="row" v-if="!response">
-                <div class="col-12 comment-status">
-                    <p>Comment successfully submitted</p>
+                <div class="col-1">
+                    <button v-on:click="editPost">Edit</button>
                 </div>
             </div>
 
-            <div class="row" v-if="post.comments">
-                <div class="col-12 comments_container">
-                    <div v-for="(comment, index) of post.comments" class="card" :key="id + index">
-                        <p>User: {{ comment.email }}</p>
-                        <p>{{ comment.discription }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" v-else>
+            <div class="row" v-if="edit">
                 <div class="col-12">
-                    <p>No comments.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row" v-if="!post">
-                <div class="col-12">
-                    <LoadingVue></LoadingVue>
+                    <form v-on:submit="updatePost">
+                        <input type="text" v-model="editBody.title" placeholder="Tile">
+                        <textarea type="text" v-model="editBody.text" placeholder="Body" />
+                        <button v-on:click="updatePost">Update</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -59,83 +33,92 @@
 </template>
 
 <script>
-import LoadingVue from '@/Components/LoadingVue.vue';
-import ButtonVue from '@/Components/ButtonVue.vue';
+import axios from 'axios'
 
 export default {
-    components: { LoadingVue, ButtonVue },
     data() {
         return {
-            id: '',
-            post: '',
-            path: '',
-            response: null,
-            likeStatus: null,
+            path: null,
+            post: null,
+            editBody: {},
+            edit: false,
         }
     },
     methods: {
-        handleSubmit(e) {
+        submit(e) {
             e.preventDefault()
-
-            const form = document.querySelector("form")
-            const formData = new FormData(form)
 
             fetch(this.path, {
                 method: "POST",
-                body: formData,
+                body: "formData",
             })
                 .then(res => {
+
                     if (res.ok) {
                         this.response = true
                     }
                 })
 
-            this.getPost();
+            // this.getPost();
 
         },
         getPost() {
-            fetch(this.path)
-                .then(res => res.json())
-                .then(data => this.post = data)
+            // fetch(this.path)
+            //     .then(res => res.json())
+            //     .then(data => this.post = data)
+
+            axios
+                .get(this.path)
+                .then(res => this.post = res.data)
         },
-        handleLike() {
-            fetch(this.path + "/like", {
-                method: "POST",
-                body: this.id
+        deletePost() {
+            fetch(this.path, {
+                method: "DELETE"
             })
-                .then(res => {
-                    if (res.ok) this.likeStatus = true
+                .then(res => res.json())
+                .then(() => this.getPost())
+        },
+        editPost() {
+            if (!this.edit) {
+                this.edit = true
+
+                this.editBody = {
+                    title: this.post.title,
+                    text: this.post.text,
+                }
+            } else {
+                this.edit = false
+            }
+        },
+        updatePost(e) {
+            e.preventDefault()
+
+            // fetch(this.path, {
+            //     method: 'PATCH',
+            //     headers: {
+            //         'Accept': 'application/json',
+            //     },
+            //     body: JSON.stringify(this.editBody),
+            // })
+            //     .then(res => {
+            //         if (res.status == 200) this.getPost()
+            //     })
+
+            axios
+                .patch(this.path, this.editBody)
+                .then((res) => {
+                    if (res.status == 200) this.getPost()
                 })
 
+            this.edit = false
         },
-        getViews() {
-            fetch(this.path + "/view", {
-                method: "POST",
-                body: this.id
-            })
-        }
     },
     created() {
-        this.id = this.$route.params.id;
-
-        this.path = `http://localhost:3000/post/${this.id}`;
-        // this.path = `http://116.203.249.5:3000/post/${this.id}`;
+        this.path = `http://localhost:3000/posts/${this.$route.params.id}`
+        // this.path = `http://116.203.249.5:3000/post/${this.$route.params.id}`;
 
         this.getPost()
-        this.getViews()
     },
-    watch: {
-        response() {
-            setTimeout(() => {
-                this.response = null
-                this.getPost()
-            }, 2000)
-        },
-        likeStatus() {
-            this.likeStatus = null
-            this.getPost()
-        }
-    }
 }
 </script>
 
@@ -153,7 +136,10 @@ export default {
     gap: 1rem;
 }
 
-.post-content .discription {}
+.post-content .no-data {
+    background-color: rgb(255, 92, 92);
+    padding: 1rem;
+}
 
 .post-content .author {
     font-size: 1rem;

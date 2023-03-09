@@ -1,30 +1,17 @@
 <template>
     <div class="container" v-motion-slide-bottom>
-        <div class="row">
-            <div class="col-12">
-                <div class="filter-buttons">
-                    <button class="filter-button" v-on:click="getNew">New</button>
-                    <button class="filter-button" v-on:click="getMostComments">The most comments</button>
-                    <button class="filter-button" v-on:click="getMostLikes">Most likes</button>
-                    <button class="filter-button" v-on:click="getMostViews">Most views</button>
-                </div>
-            </div>
-        </div>
 
-        <div class="row">
+        <div class="row" v-if="posts">
             <div class="col-12">
-                <div v-if="posts">
-                    <div v-for="post of posts" v-bind:key="post.id" class="card">
-                        <div class="card-body">
-                            <h3 v-if="post.title" class="card-title">
-                                {{ post.title }}
-                            </h3>
-                            <RouterLink v-bind:to="`/post/${post.id}`" v-on:click="viewPost(post)">
-                                <button>
-                                    View
-                                </button>
-                            </RouterLink>
-                        </div>
+                <div class="posts-container">
+                    <div v-for="post of posts" :key="post._id" class="post-container">
+                        <h2>{{ post.title }}</h2>
+                        <p>{{ post.text }}</p>
+                        <RouterLink v-bind:to="`/post/${post._id}`">
+                            <button>
+                                View
+                            </button>
+                        </RouterLink>
                     </div>
                 </div>
             </div>
@@ -48,33 +35,15 @@ export default {
         }
     },
     methods: {
-        getNew() {
+        getPosts() {
             // fetch("http://116.203.249.5:3000/new")
-            fetch("http://localhost:3000/new")
+            fetch("http://localhost:3000/posts")
                 .then(res => res.json())
-                .then(data => this.posts = JSON.parse(data))
-        },
-        getMostComments() {
-            // fetch("http://116.203.249.5:3000/comments")
-            fetch("http://localhost:3000/comments")
-                .then(res => res.json())
-                .then(data => this.posts = data);
-        },
-        getMostLikes() {
-            // fetch("http://116.203.249.5:3000/likes")
-            fetch("http://localhost:3000/likes")
-                .then(res => res.json())
-                .then(data => this.posts = data);
-        },
-        getMostViews() {
-            // fetch("http://116.203.249.5:3000/views")
-            fetch("http://localhost:3000/views")
-                .then(res => res.json())
-                .then(data => this.posts = data);
+                .then(data => this.posts = data)
         }
     },
     created() {
-        this.getNew()
+        this.getPosts()
     },
 }
 </script>

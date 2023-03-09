@@ -9,62 +9,66 @@
         <div class="row contact-content">
             <div class="col-md-6">
                 <div class="contact-data">
-                    <tr>
-                        <td>Author</td>
-                        <td>Artyom Shevchenko</td>
-                    </tr>
-                    <tr>
-                        <td>Country</td>
-                        <td>Ukraine</td>
-                    </tr>
-                    <tr>
-                        <td>State</td>
-                        <td>Kyiv</td>
-                    </tr>
-                    <tr>
-                        <td>City</td>
-                        <td>Vyshgorod</td>
-                    </tr>
-                    <tr>
-                        <td>Phone</td>
-                        <td>
-                            <a href="tel:+380934877758" class="text-decoration-underline text-primary" title="Call me">
-                                +380934877758
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Mail</td>
-                        <td>
-                            <a href="mailto:artyomshevchenkowarmgray@gmail.com"
-                                class="text-decoration-underline text-primary" title="Write to me">
-                                artyomshevchenkowarmgray@gmail.com
-                            </a>
-                        </td>
-                    </tr>
+                    <table>
+                        <tr>
+                            <td>Author</td>
+                            <td>Artyom Shevchenko</td>
+                        </tr>
+                        <tr>
+
+                            <td>Country</td>
+                            <td>Ukraine</td>
+                        </tr>
+                        <tr>
+                            <td>State</td>
+                            <td>Kyiv</td>
+                        </tr>
+                        <tr>
+                            <td>City</td>
+                            <td>Vyshgorod</td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>
+                                <a href="tel:+380934877758" class="text-decoration-underline text-primary" title="Call me">
+                                    +380934877758
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mail</td>
+                            <td>
+                                <a href="mailto:artyomshevchenkowarmgray@gmail.com"
+                                    class="text-decoration-underline text-primary" title="Write to me">
+                                    artyomshevchenkowarmgray@gmail.com
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <form v-on:submit="submitForm" id="contact-form">
-                    <input name="name" type="text" placeholder="Name" />
-                    <input name="email" type="email" placeholder="Your email" />
-                    <textarea name="text" placeholder="Message"></textarea>
+                <form v-on:submit="submit" id="contact-form">
+                    <input type="text" v-model="formData.name" />
+                    <input type="email" v-model="formData.email" />
+                    <textarea v-model="formData.text"></textarea>
 
+                    <button type="submit">Sent</button>
                     <!-- Form submit button -->
-                    <div v-if="!response && !responseError" class="d-grid">
+                    <!-- <div v-if="!response && !responseError" class="d-grid">
                         <button :disabled="isDisabled" type="submit">Submit</button>
-                    </div>
+                    </div> -->
 
                     <!-- Form submissions success message -->
-                    <div v-if="response" class="d-grid">
+                    <!-- <div v-if="response" class="d-grid">
                         <button type="submit" disabled>Form submission successful!</button>
-                    </div>
+                    </div> -->
 
                     <!-- Form submissions error message -->
-                    <div v-if="responseError" class="d-grid">
+                    <!-- <div v-if="responseError" class="d-grid">
                         <button type="submit">Error sending message!</button>
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </div>
@@ -86,33 +90,29 @@
 export default {
     data() {
         return {
-            name: "somename",
-            email: "someemail@gmail.com",
-            response: null,
-            responseError: null,
-            isDisabled: false,
+            formData: {
+                name: null,
+                email: null,
+                text: null,
+            }
         }
     },
     methods: {
-        submitForm(e) {
+        submit(e) {
             e.preventDefault()
 
-            const form = document.querySelector("#contact-form")
-            const formData = new FormData(form)
-
-            // fetch("http://localhost:3000/contact", {
-            fetch("http://116.203.249.5:3000/contact", {
+            fetch("http://localhost:3000/contact", {
+                // fetch("http://116.203.249.5:3000/contact", {
                 method: "POST",
-                body: formData,
+                body: JSON.stringify(this.formData),
             })
-                .then(res => res.json())
-                .then((res) => {
-                    if (res == 215) {
+                .then(res => {
+                    if (res.ok) {
                         this.response = true
-                    } else {
-                        this.responseError = true
                     }
                 })
+
+            console.log(this.formData)
 
         }
     }
